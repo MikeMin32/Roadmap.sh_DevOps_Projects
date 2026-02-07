@@ -1,0 +1,11 @@
+[Unit]
+Description="Dummy service for loging and testing"
+After=multi-user.target
+
+[Service]
+User=mikemin
+ExecStart=/usr/bin/bash /home/username/script.sh
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

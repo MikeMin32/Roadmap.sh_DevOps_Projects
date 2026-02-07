@@ -1,0 +1,30 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Deploy to /var/www/html') {
+      steps {
+        sh '''
+          set -e
+          sudo rsync -av --delete ./ /var/www/html/ \
+            --exclude .git \
+            --exclude Jenkinsfile
+        '''
+      }
+    }
+
+    stage('Reload nginx') {
+      steps {
+        sh '''
+          set -e
+          sudo nginx -t
+          sudo systemctl reload nginx
+        '''
+      }
+    }
+  }
+}
